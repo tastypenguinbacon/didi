@@ -9,6 +9,5 @@ repositories {
 }
 
 dependencies {
-    compile group: 'io.javaslang', name: 'javaslang', version: '2.1.0-alpha'
     testCompile group: 'org.testng', name: 'testng', version: '6.11'
 }
