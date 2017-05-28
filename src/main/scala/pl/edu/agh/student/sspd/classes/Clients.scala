@@ -31,7 +31,7 @@ case class PedicureEyeLashWCClient(state: ClientState) extends Client
 
 case class ManicurePedicureMassageClient(state: ClientState) extends Client
 
-case class UniversalClient[T <: ClientState](state: T) extends Client
+case class UniversalClient(state: ClientState) extends Client
 
 object ClientActiveStates {
 
