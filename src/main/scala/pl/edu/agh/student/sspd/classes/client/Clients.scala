@@ -12,19 +12,19 @@ trait ClientState extends State
 
 case class PedicureClient(state: PedicureClientState) extends Client
 
-trait PedicureClientState extends PedicureEyeLashWCClientState with PedicureMassageClientState with ManicurePedicureMassageClientState
+trait PedicureClientState extends ClientState
 
 case class ManicureClient(state: ManicureClientState) extends Client
 
-trait ManicureClientState extends ManicurePedicureMassageClientState with ManicureMassageClientState with ManicureEyeLashEarPierceClientState
+trait ManicureClientState extends ClientState
 
 case class EarPierceClient(state: EarPierceClientState) extends Client
 
-trait EarPierceClientState extends ManicureEyeLashEarPierceClientState
+trait EarPierceClientState extends ClientState
 
 case class MassageClient(state: MassageClientState) extends Client
 
-trait MassageClientState extends MassageEyeLashClientState // todo tutaj wątpliwości ;______;
+trait MassageClientState extends ClientState
 
 case class EyeLashClient(state: EyeLashClientState) extends Client
 
@@ -65,32 +65,70 @@ object ActiveStates {
   case class Arrival(time: Int) extends ActiveState with ClientState
 
   case class ManicureWithdraw(time: Int) extends ActiveState
-
+    with ManicureClientState
+    with ManicureMassageClientState
+    with ManicureEyeLashEarPierceClientState
+    with ManicurePedicureMassageClientState
 
   case class FingerNailPainting(time: Int) extends ActiveState
+    with ManicureClientState
+    with ManicureMassageClientState
+    with ManicureEyeLashEarPierceClientState
+    with ManicurePedicureMassageClientState
 
   case class FingerNailHardening(time: Int) extends ActiveState
+    with ManicureClientState
+    with ManicureMassageClientState
+    with ManicureEyeLashEarPierceClientState
+    with ManicurePedicureMassageClientState
 
   case class PedicureWithdraw(time: Int) extends ActiveState
+    with PedicureMassageClientState
+    with PedicureClientState
+    with PedicureEyeLashWCClientState
+    with ManicurePedicureMassageClientState
 
   case class FeetNailPainting(time: Int) extends ActiveState
+    with PedicureMassageClientState
+    with PedicureClientState
+    with PedicureEyeLashWCClientState
+    with ManicurePedicureMassageClientState
 
   case class FeetNailHardening(time: Int) extends ActiveState
+    with PedicureMassageClientState
+    with PedicureClientState
+    with PedicureEyeLashWCClientState
+    with ManicurePedicureMassageClientState
 
   case class EyeLashExtending(time: Int) extends ActiveState
+    with EyeLashClientState
+    with MassageEyeLashClientState
+    with PedicureEyeLashWCClientState
+    with ManicureEyeLashEarPierceClientState
 
   case class EyeLashExtendingWithdraw(time: Int) extends ActiveState
+    with EyeLashClientState
+    with MassageEyeLashClientState
+    with PedicureEyeLashWCClientState
+    with ManicureEyeLashEarPierceClientState
 
   case class WCOccupation(time: Int) extends ActiveState
+    with WCClientState
+    with PedicureEyeLashWCClientState
 
   case class EarPiercing(time: Int) extends ActiveState
+    with EarPierceClientState
+    with ManicureEyeLashEarPierceClientState
 
   case class EarPiercingWithdraw(time: Int) extends ActiveState
+    with EarPierceClientState
+    with ManicureEyeLashEarPierceClientState
 
   case class Payment(time: Int) extends ActiveState
+    with ClientState
 
 }
 
 object DeadStates {
-  case class
+
 }
