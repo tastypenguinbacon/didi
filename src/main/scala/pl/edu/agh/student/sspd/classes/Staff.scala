@@ -1,7 +1,5 @@
 package pl.edu.agh.student.sspd.classes
 
-import pl.edu.agh.student.sspd.state.{ActiveState, DeadState, State}
-
 /**
   * Created by pingwin on 29.05.17.
   */
