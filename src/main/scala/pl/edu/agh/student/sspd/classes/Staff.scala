@@ -1,25 +1,25 @@
 package pl.edu.agh.student.sspd.classes
 
 /**
-  * Created by pingwin on 29.05.17.
+  * Created by pingwin on 04.05.17.
   */
 
 abstract class Staff extends ObjectClass
 
 trait StaffState extends State
 
-case class CashierCleaner(state: StaffState, occupied: Boolean, queueLength: Int) extends Staff
+case class CashierCleaner(var state: StaffState, var occupied: Boolean = false, var queueLength: Int = 0) extends Staff
 
-case class Manicurist(state: StaffState, occupied: Boolean, queueLength: Int, needsLamp: Boolean)
+case class Manicurist(var state: StaffState, var occupied: Boolean = false, var queueLength: Int = 0, var needsLamp: Boolean = false)
   extends Staff
 
-case class Pedicurist(state: StaffState, occupied: Boolean, queueLength: Int, needsLamp: Boolean)
+case class Pedicurist(var state: StaffState, var occupied: Boolean = false, var queueLength: Int = 0, var needsLamp: Boolean = false)
   extends Staff
 
-case class Specialist(state: StaffState, occupied: Boolean, eyeLashExtensionQueueLength: Int,
-                      earPierceQueueLength: Int) extends Staff
+case class Specialist(var state: StaffState, var occupied: Boolean = false, var eyeLashExtensionQueueLength: Int = 0,
+                      var earPierceQueueLength: Int = 0) extends Staff
 
-case class Masseur(state: StaffState, occupied: Boolean, queueLength: Int) extends Staff
+case class Masseur(var state: StaffState, var occupied: Boolean = false, var queueLength: Int = 0) extends Staff
 
 object StaffActiveStates {
 

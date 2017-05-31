@@ -1,41 +1,20 @@
 package pl.edu.agh.student.sspd.classes
 
+import pl.edu.agh.student.sspd.classes.ClientActiveStates.Arrival
+
 /**
-  * Created by pingwin on 21.05.17.
+  * Created by pingwin on 01.05.17.
   */
-abstract class Client extends ObjectClass
+
+case class Client(state: ClientState = Arrival()) extends ObjectClass
 
 trait ClientState extends State
 
-case class PedicureClient(state: ClientState) extends Client
-
-case class ManicureClient(state: ClientState) extends Client
-
-case class EarPierceClient(state: ClientState) extends Client
-
-case class MassageClient(state: ClientState) extends Client
-
-case class EyeLashClient(state: ClientState) extends Client
-
-case class WCClient(state: ClientState) extends Client
-
-case class MassageEyeLashClient(state: ClientState) extends Client
-
-case class ManicureMassageClient(state: ClientState) extends Client
-
-case class PedicureMassageClient(state: ClientState) extends Client
-
-case class ManicureEyeLashEarPierceClient(state: ClientState) extends Client
-
-case class PedicureEyeLashWCClient(state: ClientState) extends Client
-
-case class ManicurePedicureMassageClient(state: ClientState) extends Client
-
-case class UniversalClient(state: ClientState) extends Client
-
 object ClientActiveStates {
 
-  case class Arrival(time: Int) extends ActiveState with ClientState
+  case class Arrival() extends ActiveState with ClientState {
+    val time = 1
+  }
 
   case class ManicureWithdraw(time: Int) extends ActiveState with ClientState
 
@@ -60,6 +39,10 @@ object ClientActiveStates {
   case class EarPiercingWithdraw(time: Int) extends ActiveState with ClientState
 
   case class Payment(time: Int) extends ActiveState with ClientState
+
+  case class Massage(time: Int) extends ActiveState with ClientState
+
+  case class MassageWithdrawal(time: Int) extends ActiveState with ClientState
 
 }
 

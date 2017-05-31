@@ -1,19 +1,19 @@
 package pl.edu.agh.student.sspd.classes
 
 /**
-  * Created by pingwin on 29.05.17.
+  * Created by pingwin on 02.05.17.
   */
 abstract class Equipment extends ObjectClass
 
 trait EquipmentState extends State
 
-case class WC(state: EquipmentState, needsCleaning: Boolean, occupied: Boolean, queueLength: Int)
+case class WC(var state: EquipmentState, var needsCleaning: Boolean, var occupied: Boolean, var queueLength: Int)
   extends Equipment
 
-case class MassageBed(state: EquipmentState, needsCleaning: Boolean, occupied: Boolean, queueLength: Int)
+case class MassageBed(var state: EquipmentState, var needsCleaning: Boolean, var occupied: Boolean, var queueLength: Int)
   extends Equipment
 
-case class UVLamp(state: EquipmentState, occupied: Boolean, failure: Boolean)
+case class UVLamp(var state: EquipmentState, var occupied: Boolean, var failure: Boolean)
   extends Equipment
 
 object EquipmentActiveStates {
