@@ -14,8 +14,8 @@ class Coordinator() {
 
   val wc: WC = WC(Idle(), needsCleaning = false, occupied = false, 0)
   val lamp: UVLamp = UVLamp(Idle(), occupied = false, failure = false)
-  val massageBed1: MassageBed = MassageBed(Idle(), needsCleaning = false, occupied = false, 0)
-  val massageBed2: MassageBed = MassageBed(Idle(), needsCleaning = false, occupied = false, 0)
+  val massageBed1: MassageBed = MassageBed(Idle(), needsCleaning = false, occupied = false)
+  val massageBed2: MassageBed = MassageBed(Idle(), needsCleaning = false, occupied = false)
 
   var iteration: Int = 0
   private var clients: List[Client] = List()
