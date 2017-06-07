@@ -6,9 +6,6 @@ import pl.edu.agh.student.sspd.simulation.Coordinator
 
 import scala.util.Random
 
-/**
-  * Created by pingwin on 06.06.17.
-  */
 class CoordinatorPartTest {
   val random = new Random() {
     override def nextInt(n: Int): Int = 0
@@ -38,7 +35,7 @@ class CoordinatorPartTest {
     coordinator.pedicurist.queueLength = 10
     val part = PedicureCoordinatorPart(random)
     Assert.assertTrue(part.next(coordinator).isInstanceOf[PedicureWithdraw])
-    Assert.assertEquals(coordinator.pedicurist.queueLength, 11)
+    Assert.assertEquals(coordinator.pedicurist.queueLength, 10)
     coordinator.iteration = 1
     Assert.assertTrue(part.next(coordinator).isInstanceOf[OutOfSystem])
     Assert.assertTrue(coordinator.pedicurist.queueLength == 10)
@@ -89,7 +86,7 @@ class CoordinatorPartTest {
     coordinator.manicurist.queueLength = 10
     val part = ManicureCoordinatorPart(random)
     Assert.assertTrue(part.next(coordinator).isInstanceOf[ManicureWithdraw])
-    Assert.assertEquals(coordinator.manicurist.queueLength, 11)
+    Assert.assertEquals(coordinator.manicurist.queueLength, 10)
     coordinator.iteration = 1
     Assert.assertTrue(part.next(coordinator).isInstanceOf[OutOfSystem])
     Assert.assertTrue(coordinator.manicurist.queueLength == 10)
@@ -140,7 +137,7 @@ class CoordinatorPartTest {
     coordinator.masseur.queueLength = 10
     val part = MassageCoordinatorPart(random)
     Assert.assertTrue(part.next(coordinator).isInstanceOf[MassageWithdraw])
-    Assert.assertEquals(coordinator.masseur.queueLength, 11)
+    Assert.assertEquals(coordinator.masseur.queueLength, 10)
     coordinator.iteration = 1
     Assert.assertTrue(part.next(coordinator).isInstanceOf[OutOfSystem])
     Assert.assertTrue(coordinator.masseur.queueLength == 10)

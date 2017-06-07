@@ -1,8 +1,5 @@
 package pl.edu.agh.student.sspd.classes
 
-/**
-  * Created by pingwin on 05.06.17.
-  */
 trait State {
   val message: String
 }

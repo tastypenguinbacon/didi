@@ -13,11 +13,15 @@ import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.GridPane
 import scalafx.scene.text.Text
 
-/**
-  * Created by pingwin on 06.06.17.
-  */
 object Gui extends JFXApp {
-  val coordinator: Coordinator = new Coordinator
+  val log = new TextArea {
+    minHeight = 600
+    maxHeight = 600
+    wrapText = true
+    editable = false
+  }
+
+  val coordinator: Coordinator = new Coordinator(s => log.text = coordinator.iteration + "min    " + s + "\n" + log.text.value)
 
   stage = new application.JFXApp.PrimaryStage {
     title = "Symulacja"
@@ -121,12 +125,6 @@ object Gui extends JFXApp {
       add(payment, 1, 2)
     }
 
-    val log = new TextArea {
-      minHeight = 600
-      maxHeight = 600
-      wrapText = true
-      editable = false
-    }
 
     val logAppender: (String) => (() => Unit) => (MouseEvent) => Unit = (message: String) => (ev: () => Unit) => (_: MouseEvent) => {
       val iteration = coordinator.iteration
@@ -138,72 +136,72 @@ object Gui extends JFXApp {
       add(new Button("Klient pedicure") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta pedicure")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta pedicure")(() => coordinator.add(PedicureClient()))
       }, 0, 0)
       add(new Button("Klient manicure") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta manicure")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta manicure")(() => coordinator.add(ManicureClient()))
       }, 0, 1)
       add(new Button("Klient uszy") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta do przebijania uszu")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta do przebijania uszu")(() => coordinator.add(EarPierceClient()))
       }, 0, 3)
       add(new Button("Klient masaż") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta do masażu")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta do masażu")(() => coordinator.add(MassageClient()))
       }, 0, 4)
       add(new Button("Klient rzęsy") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta do przedłużania rzęs")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta do przedłużania rzęs")(() => coordinator.add(EyeLashClient()))
       }, 0, 5)
       add(new Button("Klient WC") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta WC")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta WC")(() => coordinator.add(WCClient()))
       }, 0, 6)
       add(new Button("Klient masażu i rzęs") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta masażu i rzęs")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta masażu i rzęs")(() => coordinator.add(MassageEyeLashClient()))
       }, 0, 7)
       add(new Button("Klient manicure i masażu") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta manicure i masażu")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta manicure i masażu")(() => coordinator.add(ManicureMassageClient()))
       }, 0, 8)
       add(new Button("Klient pedicure i masażu") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta pedicure i masażu")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta pedicure i masażu")(() => coordinator.add(PedicureMassageClient()))
       }, 0, 9)
       add(new Button("Klient manicure, rzęsy i uszy") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta manicure, przedłużania rzęs i przebijania uszu")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta manicure, przedłużania rzęs i przebijania uszu")(() => ManicureEyeLashEarCliet())
       }, 0, 10)
       add(new Button("Klient pedicure, rzęsy i WC") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta pedicure, rzęs i WC")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta pedicure, rzęs i WC")(() => PedicureEyeLashWCClient())
       }, 0, 11)
       add(new Button("Klient uniwersalny") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Przybycie klienta uniwersalnego")(() => None)
+        onMouseClicked = logAppender("Przybycie klienta uniwersalnego")(() => UniversalClient())
       }, 0, 12)
       add(new Button("Zepsucie lampy UV") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Zepsuła się lampa UV")(() => None)
+        onMouseClicked = logAppender("Zepsuła się lampa UV")(() => coordinator.lamp.failure = true)
       }, 0, 13)
       add(new Button("Zabrudzenie toalety") {
         minWidth = 300
         minHeight = 500 / 14
-        onMouseClicked = logAppender("Toaleta wymaga czyszczenia")(() => None)
+        onMouseClicked = logAppender("Toaleta wymaga czyszczenia")(() => coordinator.wc.needsCleaning = true)
       }, 0, 14)
       minWidth = 300
       minHeight = 490
@@ -296,6 +294,7 @@ object Gui extends JFXApp {
       case WaitingForOrders() => "Czeka na klienta"
       case FingerNailPainting(time) => "Malowanie paznokci przez " + time + "min"
       case FingerNailHardening(time) => "Utwardzanie paznokci przez " + time + "min"
+      case CleaningUpAfterManicure(time) => "Sprzątanie po manicure do:" + time + "min"
       case WaitingForVanishToDry() => "Oczekiwanie na przeschnięcie lakieru"
       case _ => ""
     }
@@ -307,8 +306,9 @@ object Gui extends JFXApp {
     val needsLamp = if (pedicurist.needsLamp) "Potrzebuje lampy" else "Nie potrzebuje lampy"
     val state = pedicurist.state match {
       case WaitingForOrders() => "Czeka na klienta"
-      case FingerNailPainting(time) => "Malowanie paznokci przez " + time + "min"
-      case FingerNailHardening(time) => "Utwardzanie paznokci przez " + time + "min"
+      case FootNailPainting(time) => "Malowanie paznokci przez " + time + "min"
+      case FootNailHardening(time) => "Utwardzanie paznokci przez " + time + "min"
+      case CleaningUpAfterPedicure(time) => "Sprzątanie po pedicure do: " + time + "min"
       case WaitingForVanishToDry() => "Oczekiwanie na przeschnięcie lakieru"
       case _ => ""
     }
@@ -333,6 +333,7 @@ object Gui extends JFXApp {
     val needsCleaning = if (wc.needsCleaning) "Wymaga sprzątnia" else "Czysta"
     val state = wc.state match {
       case WCUse(time) => "Toaleta używana przez " + time + "min"
+      case WCOccupation(time) => "Toaleta używana przez " + time + "min"
       case WCCleaning(time) => "Toaleta sprzątana przez " + time + "min"
       case Idle() => "Toaleta nieużywana"
       case _ => ""
