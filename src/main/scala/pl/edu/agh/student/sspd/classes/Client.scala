@@ -96,7 +96,6 @@ case class UniversalClient() extends Client {
     MassageCoordinatorPart(new Random),
     EyeLashExtensionCoordinatorPart(new Random),
     EarPiercingCoordinatorPart(new Random)
-
   )
   override var first: CoordinatorPart = PedicureCoordinatorPart(new Random)
 }
@@ -163,15 +162,11 @@ case class PedicureCoordinatorPart(random: Random) extends CoordinatorPart {
             global.pedicurist.queueLength = global.pedicurist.queueLength - 1
           }
         }
-      case PedicureWithdraw(_) =>
-        if (global.iteration == nextEvent) {
+      case PedicureWithdraw(_) if global.iteration == nextEvent =>
           current = OutOfSystem()
-        }
-      case FootNailPainting(_) =>
-        if (global.iteration == nextEvent) {
+      case FootNailPainting(_) if global.iteration == nextEvent =>
           current = WaitingForVanishToDry()
           global.pedicurist.needsLamp = true
-        }
       case WaitingForVanishToDry() => {
         if (global.lamp.failure) {
           if (!global.lamp.state.isInstanceOf[EquipmentRepair]) {
