@@ -126,6 +126,10 @@ case class CleaningUpAfterEarPiercing(time: Int) extends ActiveState {
   override val message: String = "Sprzątanie po przebijaniu uszu"
 }
 
+case class CleaningUpAfterEyeLashExtension(time: Int) extends ActiveState {
+  override val message: String = "Sprzątanie po przedłużaniu rzęs"
+}
+
 case class CleaningUpAfterMassage(time: Int) extends ActiveState {
   override val message: String = "Sprzątanie po masażu"
 }

@@ -2,7 +2,7 @@ package pl.edu.agh.student.sspd.simulation
 
 import pl.edu.agh.student.sspd.classes._
 
-class Coordinator() {
+class Coordinator(consumer: (String) => Unit = (_: String) => _) {
   val cashierCleaner: CashierCleaner = CashierCleaner(WaitingForOrders())
 
   val manicurist: Manicurist = Manicurist(WaitingForOrders())
@@ -29,6 +29,6 @@ class Coordinator() {
   }
 
   def next(): Unit = {
-
+    iteration += 1
   }
 }

@@ -7,17 +7,17 @@ import scala.util.Random
 /**
   * Created by pingwin on 05.06.17.
   */
-case class Client(var stateMachines: List[StateMachine]) {
+case class Client(var stateMachines: List[CoordinatorPart]) {
   def nextState(global: Coordinator): Unit = {
 
   }
 }
 
-trait StateMachine {
+trait CoordinatorPart {
   def next(global: Coordinator): State
 }
 
-case class PaymentStateMachine(random: Random) extends StateMachine {
+case class PaymentCoordinatorPart(random: Random) extends CoordinatorPart {
   private var current: State = WaitingForPayment()
   private var nextEvent = -1
 
@@ -47,7 +47,7 @@ case class PaymentStateMachine(random: Random) extends StateMachine {
   }
 }
 
-case class PedicureStateMachine(random: Random) extends StateMachine {
+case class PedicureCoordinatorPart(random: Random) extends CoordinatorPart {
   private var current: State = WaitingForPedicurist()
   private var nextEvent = -1
 
@@ -121,7 +121,7 @@ case class PedicureStateMachine(random: Random) extends StateMachine {
   }
 }
 
-case class ManicureStateMachine(random: Random) extends StateMachine {
+case class ManicureCoordinatorPart(random: Random) extends CoordinatorPart {
   private var current: State = WaitingForManicurist()
   private var nextEvent = -1
 
@@ -194,7 +194,7 @@ case class ManicureStateMachine(random: Random) extends StateMachine {
   }
 }
 
-case class MassageStateMachine(random: Random) extends StateMachine {
+case class MassageCoordinatorPart(random: Random) extends CoordinatorPart {
   private var current: State = WaitingForMassage()
   private var nextEvent = -1
   private var bed: MassageBed = _
@@ -244,4 +244,42 @@ case class MassageStateMachine(random: Random) extends StateMachine {
     }
     current
   }
+}
+
+case class WcCoordinatorPart(random: Random) extends CoordinatorPart {
+  private var current: State = WaitingForWC()
+  private var nextEvent = -1
+  override def next(global: Coordinator): State = {
+    if (nextEvent == -1) {
+      nextEvent = 0
+      global.wc.queueLength += 1
+    }
+    current match {
+      case WaitingForWC() =>
+        if (!global.wc.occupied && !global.wc.needsCleaning) {
+          val time = 2 + random.nextInt(9)
+          nextEvent = global.iteration + time
+          current = WCOccupation(time)
+          global.wc.state = WCOccupation(time)
+          global.wc.occupied = true
+          global.wc.queueLength -= 1
+        }
+      case WCOccupation(_) =>
+        if (global.iteration == nextEvent) {
+          current = OutOfSystem()
+          global.wc.occupied = false
+          global.wc.state = Idle()
+        }
+      case _ =>
+
+    }
+    current
+  }
+}
+
+case class EarPiercingCoordinatorPart(random: Random) extends CoordinatorPart {
+  private var current: State = WaitingForSpecialist()
+  private var nextEvent = -1
+
+  override def next(global: Coordinator): State = null
 }
